@@ -17,8 +17,6 @@
 
 https://stackblitz.com/github/JonathanXDR/repro-nuxt-i18n-strictseo-og-locale-alternate
 
-Three locales (`de-DE` / `en-US` / `fr-FR`), `strategy: 'prefix'`, `experimental.strictSeo: true`. The StackBlitz start command runs `nuxt generate` and greps the `og:locale` tags out of `.output/public/de/index.html`.
-
 ## Describe the bug
 
 With `experimental.strictSeo: true`, the `og:locale:alternate` meta tags are derived from the hreflang link list instead of from the locales' `language` tags. `getHreflangLinks()` deliberately adds a bare-language catchall entry per language (`de`, `en`, `fr`), which is correct for `hreflang`, but those bare entries leak into `og:locale:alternate`.
