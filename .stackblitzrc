@@ -1,0 +1,4 @@
+{
+  "installDependencies": true,
+  "startCommand": "npm run generate && echo '----- og:locale tags in .output/public/de/index.html (strictSeo: true) -----' && grep -oE '<meta[^>]*og:locale[^>]*>' .output/public/de/index.html"
+}

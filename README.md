@@ -15,16 +15,18 @@ Two defects follow:
    `de-DE` page) survives the `locale !== currentLanguage` filter, so the page
    lists its own language as an alternate of itself.
 
-The non-strict path (manual `useLocaleHead`) computes the list correctly from
+The non-strict path computes the list correctly from
 `options.locales.map(x => x.language || x.code)`.
 
 ## Steps to reproduce
 
 ```bash
-bun install   # or npm install
-bun run dev
-curl -s http://localhost:3000/de | grep -oE '<meta[^>]*og:locale[^>]*>'
+npm install
+npm run generate
+grep -oE '<meta[^>]*og:locale[^>]*>' .output/public/de/index.html
 ```
+
+(StackBlitz runs exactly this via `.stackblitzrc`.)
 
 ## Actual (strictSeo: true)
 
@@ -37,7 +39,7 @@ curl -s http://localhost:3000/de | grep -oE '<meta[^>]*og:locale[^>]*>'
 <meta property="og:locale:alternate" content="fr_FR">
 ```
 
-## Expected (what `strictSeo: false` + manual `useLocaleHead({ seo: true })` in `app.vue` produces)
+## Expected (control case)
 
 ```html
 <meta id="i18n-og" property="og:locale" content="de_DE">
@@ -45,9 +47,12 @@ curl -s http://localhost:3000/de | grep -oE '<meta[^>]*og:locale[^>]*>'
 <meta id="i18n-og-alt-fr-FR" property="og:locale:alternate" content="fr_FR">
 ```
 
-To verify the control case yourself: set `experimental.strictSeo: false` in
-`nuxt.config.ts` (the manual `useLocaleHead` wiring in `app/app.vue` is already
-in place) and re-run the `curl`.
+To verify the control case: set `experimental.strictSeo: false` in
+`nuxt.config.ts` and uncomment the two `useLocaleHead` lines in `app/app.vue`,
+then re-run `npm run generate` and grep the same file. Note that under strictSeo
+the manual `useLocaleHead` call must stay commented out, because strictSeo throws
+("Strict SEO mode is enabled, `useLocaleHead` should not be used") if it is left
+in place.
 
 ## Root cause
 
@@ -76,8 +81,7 @@ Both code paths should derive OG alternates from
 - @nuxtjs/i18n: 10.4.0
 - nuxt: 4.4.8
 - vue: 3.5.38
-- node: 24.x / bun 1.x
+- node: 24.x
 - macOS (darwin 25.5.0)
 
-Confirmed live on 2026-06-12 with both dev server SSR output and the
-production build.
+Confirmed live on 2026-06-25 with the prerendered `nuxt generate` output.

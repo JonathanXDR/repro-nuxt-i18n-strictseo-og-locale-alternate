@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
-    "build": "nuxt build"
+    "build": "nuxt build",
+    "generate": "nuxt generate"
   },
   "devDependencies": {
     "@nuxtjs/i18n": "10.4.0",

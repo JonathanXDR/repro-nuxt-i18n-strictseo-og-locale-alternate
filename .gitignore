@@ -3,3 +3,5 @@ node_modules
 .output
 dist
 .data
+package-lock.json
+bun.lock

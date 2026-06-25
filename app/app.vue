@@ -1,11 +1,13 @@
 <script setup lang="ts">
-// Manual SEO head wiring, required when strictSeo is off. With strictSeo on,
-// the module applies the same localeHead() output automatically, so both
-// setups exercise the identical head-generation code path in
-// dist/runtime/kit/head.js and differ only in the languages list passed to
-// getAlternateOgLocales().
-const head = useLocaleHead({ seo: true })
-useHead(head)
+// With `experimental.strictSeo: true` the module injects the localized head
+// tags automatically via dist/runtime/kit/head.js (localeHead()), so no manual
+// wiring is needed here. Calling `useLocaleHead` under strictSeo throws, which
+// is why this file is intentionally empty.
+//
+// To verify the non-strict control case: set `strictSeo: false` in
+// nuxt.config.ts and uncomment the two lines below.
+// const head = useLocaleHead({ seo: true })
+// useHead(head)
 </script>
 
 <template>
